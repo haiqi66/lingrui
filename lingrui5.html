@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form id="myform">
+    <h2>新生报名</h2>
+    <div>
+        <label>姓名</label>
+        <input type="text" id="name" placeholder="请输入姓名">
+        <span id="nameerror" style="color: red;"></span>
+    </div>
+<div> 
+    <label>方向：</label>
+    
+    <select id="dirxuanzhe">
+      <option value="">请选择报名方向</option>
+         <option value="前端">前端</option>
+          <option value="后端">后端</option>
+          <option value="设计">设计</option>
+           
+    </select>
+    <span id="dirxuanzheerror" style="color: red;"></span>
+    
+
+</div>
+<div>
+<label>自我介绍</label>
+<textarea id="bio"></textarea>
+<div id="countbox">0/100</div>
+<span id="bioerror" style="color: red;"></span>
+</div>
+<div>
+    <input type="checkbox" id="agree">
+    <label>同意须知</label>
+    <span id="agreeerror" style="color: red;"></span>
+
+</div>
+<div>
+    <button type="reset" id="resetbn">重置</button>
+    <button type="submit" id="submitbtn">提交</button>
+</div>
+</form>
+<div id="succesMge" style="display: none;color: green;font-weight: bold;">报名成功</div>
+<script>
+var myform=document.getElementById('myform');
+var nameInput=document.getElementById('name');
+var dirxuanzhe=document.getElementById('dirxuanzhe');
+var bio=document.getElementById('bio');
+var msg=document.getElementById('succesMge');
+var agree=document.getElementById('agree');
+var rules=[
+{el:nameInput,pass:function(v){return v!== '';},msg:'请输入姓名'},
+{el:dirxuanzhe,pass:function(v){return v !== '';},msg:'请选择报名方向'},
+{el:bio,pass:function(v){return v !=='';},msg:'自我介绍不能为空'},
+{el:bio,pass:function(v){return v.length<=100;},msg:'自我介绍的字数不能超过100'},
+{el:agree,pass:function(v){return v===true;},msg:'请勾选同意须知'}
+] 
+function value(el){
+    if(el.type==='checkbox') return el.checked;
+    return el.value.trim();
+}
+function show(el,msg){
+    var box=document.getElementById(el.id+'error');
+    box.textContent=msg;
+}
+function clear(el){
+var box=document.getElementById(el.id+'error');
+box.textContent='';
+}
+function check(){
+    var allpass=true;
+    for(var i=0;i<rules.length;i++){
+        var r=rules[i];
+        if(r.pass(value(r.el))){
+            clear(r.el)
+        } else{
+            show(r.el,r.msg);
+            allpass=false
+        }
+
+    } return allpass;
+    
+}
+myform.onsubmit=function(e){
+    e.preventDefault();
+    msg.style.display='none';
+    if (check()){
+        msg.style.display='block';
+    }
+}
+myform.onreset = function(){
+    for (var i = 0; i < rules.length; i++) {
+        clear(rules[i].el);
+    }
+    msg.style.display = 'none';
+};
+</script>
+</body>
+</html>
